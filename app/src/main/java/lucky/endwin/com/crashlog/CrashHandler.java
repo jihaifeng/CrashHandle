@@ -50,7 +50,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     //存储设备信息和异常信息的Map
     private Map<String, String> infos = new HashMap<>();
     //崩溃日志文件的名字，前缀，全称 （mFileName + 当天日期），默认txt文件
-    private static String mFileName = "CrashLog-";
+    private static String mFileName = "CrashLog";
     //崩溃日志文件夹的名字，默认为Crash
     private static String mfloadName = "Crash";
     //程序异常后的提示语数组
@@ -135,7 +135,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             public boolean accept(File file, String filename) {
                 String s = FileUtils.getFileNameWithoutExtension(filename);
                 int day = autoClearDay < 0 ? autoClearDay : -1 * autoClearDay;
-                String date = "crash-" + DateTimeUtils.getOtherDay(day);
+                String date = getFileName()+"-" + DateTimeUtils.getOtherDay(day);
                 return date.compareTo(s) >= 0;
             }
         });
@@ -264,7 +264,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      */
     private String writeErrorToFile(String strError) {
 
-        String fileName = getFileName();
+        String fileName = getFileFullName();
         try {
             if (FileUtils.hasSdcard()) {
                 String path = getfloadPath();
@@ -297,13 +297,21 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         }
     }
 
+    /**
+     * 获取崩溃日志的文件名前缀(路径前缀)
+     *
+     * @return 如 CrashLog
+     */
+    public static String getFileName() {
+        return mFileName;
+    }
 
     /**
-     * 获取崩溃日志的文件名
+     * 获取崩溃日志的文件名(全路径)
      *
      * @return 如 CrashLog-20160624.txt
      */
-    public String getFileName() {
+    public String getFileFullName() {
         String dateToday = DateTimeUtils.getCustomDateFormat();
         String fileName = mFileName + "-" + dateToday + ".txt";
         return fileName;
