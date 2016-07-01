@@ -53,6 +53,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private static String mFileName = "CrashLog";
     //崩溃日志文件夹的名字，默认为Crash
     private static String mfloadName = "Crash";
+    //文件名之间的分隔符
+    private static String SEPARATOR = "-";
     //程序异常后的提示语数组
     private String[] msg = {"对不起，程序出现异常，即将退出！", "对不起，程序出现异常，即将重启！"};
     //要显示的提示语
@@ -135,7 +137,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             public boolean accept(File file, String filename) {
                 String s = FileUtils.getFileNameWithoutExtension(filename);
                 int day = autoClearDay < 0 ? autoClearDay : -1 * autoClearDay;
-                String date = getFileName()+"-" + DateTimeUtils.getOtherDay(day);
+                String date = getFileName()+SEPARATOR + DateTimeUtils.getOtherDay(day);
                 return date.compareTo(s) >= 0;
             }
         });
@@ -313,7 +315,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      */
     public String getFileFullName() {
         String dateToday = DateTimeUtils.getCustomDateFormat();
-        String fileName = mFileName + "-" + dateToday + ".txt";
+        String fileName = mFileName + SEPARATOR + dateToday + ".txt";
         return fileName;
     }
 
